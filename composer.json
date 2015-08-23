@@ -1,0 +1,23 @@
+{
+  "config": {
+    "bin-dir": "bin/"
+  },
+  "name": "newage/AudioManager",
+  "description": "Audio Manager for text-to-speech cloud services",
+  "license": "MIT",
+  "keywords": [
+    "tts",
+    "speech"
+  ],
+  "require": {
+    "php":  ">=5.5"
+  },
+  "require-dev": {
+    "phpspec/phpspec":  "~2.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "AudioManager": "src/"
+    }
+  }
+}
