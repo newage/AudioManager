@@ -20,6 +20,12 @@ class GoogleSpec extends ObjectBehavior
 
     function it_is_header()
     {
-        $this->getHeaders()->shouldHaveType('AudioManager\Adapter\Header\Http');
+        $this->setHeaders(['code' => 200]);
+        $this->getHeaders()->shouldHaveKeyWithValue('code', 200);
+    }
+
+    function it_set_options()
+    {
+
     }
 }

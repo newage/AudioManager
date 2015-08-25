@@ -2,8 +2,6 @@
 
 namespace AudioManager\Adapter;
 
-use AudioManager\Adapter\Header\Http;
-
 /**
  * Google TTS adapter
  * @package AudioManager\Adapter
@@ -11,7 +9,7 @@ use AudioManager\Adapter\Header\Http;
 class Google implements AdapterInterface
 {
 
-    protected $headers;
+    protected $headers = [];
 
     /**
      * @param $text
@@ -20,7 +18,16 @@ class Google implements AdapterInterface
      */
     public function read($text, $options = null)
     {
-        return null;
+        $path = sprintf('http://translate.google.com/translate_tts?ie=UTF-8&tl=en&q=%s', urlencode($text));
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_URL, $path);
+        $response = curl_exec($curl);
+        $this->setHeaders(curl_getinfo($curl));
+        curl_close($curl);
+
+        return $response;
     }
 
     /**
@@ -28,6 +35,15 @@ class Google implements AdapterInterface
      */
     public function getHeaders()
     {
-        return new Http();
+        return $this->headers;
+    }
+
+    /**
+     * Set HTTP headers after read
+     * @param array $headers
+     */
+    public function setHeaders(array $headers)
+    {
+        $this->headers = $headers;
     }
 }
