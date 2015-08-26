@@ -1,1 +1,2 @@
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/newage/AudioManager/badges/quality-score.png?s=6aaf3c31ce15cebd1d4bed718cd41fd2d921fd31)](https://scrutinizer-ci.com/g/newage/AudioManager/)
+[![Scrutinizer build](https://scrutinizer-ci.com/g/newage/AudioManager/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/newage/AudioManager/)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/newage/AudioManager/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/newage/AudioManager/)
