@@ -13,9 +13,19 @@ class GoogleSpec extends ObjectBehavior
         $this->shouldImplement('AudioManager\Adapter\AdapterInterface');
     }
 
+    function it_is_read_without_options()
+    {
+        $this->shouldThrow()->during('read', ['some text']);
+    }
+
+    function it_is_read_with_language_options()
+    {
+        $this->shouldThrow()->during('read', ['some text', []]);
+    }
+
     function it_is_read()
     {
-        $this->read('some text');
+        $this->read('some text', ['language' => 'en']);
     }
 
     function it_is_header()
@@ -26,6 +36,17 @@ class GoogleSpec extends ObjectBehavior
 
     function it_set_options()
     {
+        $this->setOptions(['encoding' => 'UTF-8', 'language' => 'en'])->shouldHaveType('AudioManager\Adapter\Google');
+        $this->getOptions()->shouldHaveType('AudioManager\Adapter\Google\Options');
+    }
 
+    function it_set_fake_options()
+    {
+        $this->shouldThrow()->during('setOptions', [1]);
+    }
+
+    function it_get_empty_options()
+    {
+        $this->shouldThrow()->during('getOptions', []);
     }
 }

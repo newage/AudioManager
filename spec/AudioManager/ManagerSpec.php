@@ -24,9 +24,4 @@ class ManagerSpec extends ObjectBehavior
         $this->setAdapter($adapter);
         $this->getAdapter()->shouldBe($adapter);
     }
-
-    function it_get_headers(GoogleAdapter $adapter)
-    {
-
-    }
 }
