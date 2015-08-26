@@ -18,7 +18,7 @@ class Options
      * Constructor
      * @param array $options
      */
-    public function __construct(array $options = null)
+    public function __construct(array $options = [])
     {
         foreach ($options as $name => $value) {
             $name = strtolower($name);

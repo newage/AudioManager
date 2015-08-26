@@ -22,4 +22,11 @@ interface AdapterInterface
      * @return mixed
      */
     public function getHeaders();
+
+    /**
+     * Set options for adapter
+     * @param $options
+     * @return mixed
+     */
+    public function setOptions($options);
 }

@@ -23,11 +23,6 @@ class GoogleSpec extends ObjectBehavior
         $this->shouldThrow()->during('read', ['some text', []]);
     }
 
-    function it_is_read()
-    {
-        $this->read('some text', ['language' => 'en']);
-    }
-
     function it_is_header()
     {
         $this->setHeaders(['code' => 200]);
