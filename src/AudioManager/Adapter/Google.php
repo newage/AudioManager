@@ -17,10 +17,10 @@ class Google implements AdapterInterface
 
     /**
      * @param string $query
-     * @param array|Options|null $options
+     * @param array|Options $options
      * @return mixed
      */
-    public function read($query, $options = null)
+    public function read($query, $options = [])
     {
         $this->setOptions($options);
 
@@ -38,7 +38,7 @@ class Google implements AdapterInterface
 
     /**
      * Create url from options
-     * @param $query
+     * @param string $query
      * @return string
      */
     protected function createUrl($query)
@@ -46,7 +46,7 @@ class Google implements AdapterInterface
         $options = $this->getOptions();
         $path = sprintf(
             'http://translate.google.com/translate_tts?ie=%s&tl=%s&q=%s',
-            $options->hasEncoding() ? $options->getEncoding(): 'UTF-8',
+            $options->hasEncoding() ? $options->getEncoding() : 'UTF-8',
             $options->getLanguage(),
             urlencode($query)
         );
@@ -81,7 +81,7 @@ class Google implements AdapterInterface
             $this->options = new Options($options);
         } elseif ($options instanceof Options) {
             $this->options = $options;
-        } elseif (null !== $options) {
+        } elseif (!empty($options)) {
             throw new RuntimeException('Options must be an array or an `Options` object');
         }
 

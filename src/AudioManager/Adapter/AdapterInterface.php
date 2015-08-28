@@ -11,22 +11,22 @@ interface AdapterInterface
 
     /**
      * Read audio from adapter
-     * @param $text
-     * @param null $options
+     * @param string $text
+     * @param array $options
      * @return mixed
      */
-    public function read($text, $options = null);
+    public function read($text, $options = []);
 
     /**
      * Get headers after read
-     * @return mixed
+     * @return array
      */
     public function getHeaders();
 
     /**
      * Set options for adapter
-     * @param $options
-     * @return mixed
+     * @param array|Options $options
+     * @return $this
      */
     public function setOptions($options);
 }

@@ -3,6 +3,7 @@
 namespace AudioManager\Adapter;
 
 use AudioManager\Adapter\Ivona\AuthenticateInterface;
+use AudioManager\Adapter\Ivona\Options;
 use AudioManager\Exception\RuntimeException;
 
 /**
@@ -25,7 +26,7 @@ class Ivona implements AdapterInterface
         $this->setAuthenticate($authenticate);
     }
 
-    public function read($text, $options = null)
+    public function read($text, $options = [])
     {
         // TODO: Implement read() method.
     }
@@ -40,12 +41,20 @@ class Ivona implements AdapterInterface
 
     public function getHeaders()
     {
-        // TODO: Implement getHeaders() method.
+        return $this->headers;
     }
 
     public function setOptions($options)
     {
-        // TODO: Implement setOptions() method.
+        if (is_array($options)) {
+            $this->options = new Options($options);
+        } elseif ($options instanceof Options) {
+            $this->options = $options;
+        } elseif (!empty($options)) {
+            throw new RuntimeException('Options must be an array or an `Options` object');
+        }
+
+        return $this;
     }
 
     /**
@@ -63,7 +72,7 @@ class Ivona implements AdapterInterface
     public function getAuthenticate()
     {
         if (null === $this->authenticate) {
-            throw new RuntimeException('An authenticate object need setup for the Ivona');
+            throw new RuntimeException('An authenticate object need setup for the Ivona adapter');
         }
         return $this->authenticate;
     }
