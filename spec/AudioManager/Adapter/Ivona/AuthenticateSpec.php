@@ -10,7 +10,6 @@ class AuthenticateSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('AudioManager\Adapter\Ivona\Authenticate');
-        $this->shouldImplement('AudioManager\Adapter\Ivona\AuthenticateInterface');
     }
 
     function it_set_public_key()

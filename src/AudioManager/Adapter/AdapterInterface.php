@@ -12,10 +12,9 @@ interface AdapterInterface
     /**
      * Read audio from adapter
      * @param string $text
-     * @param array $options
      * @return mixed
      */
-    public function read($text, $options = []);
+    public function read($text);
 
     /**
      * Get headers after read

@@ -6,7 +6,7 @@ namespace AudioManager\Adapter\Ivona;
  * Simple authenticator with secret key and success key for Ivona adapter
  * @package AudioManager\Adapter\Ivona
  */
-class Authenticate implements AuthenticateInterface
+class Authenticate
 {
 
     protected $secretKey;

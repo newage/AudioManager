@@ -17,13 +17,10 @@ class Google implements AdapterInterface
 
     /**
      * @param string $query
-     * @param array|Options $options
      * @return mixed
      */
-    public function read($query, $options = [])
+    public function read($query)
     {
-        $this->setOptions($options);
-
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_URL, $this->createUrl($query));
@@ -72,17 +69,15 @@ class Google implements AdapterInterface
 
     /**
      * Set options for google adapter
-     * @param array|Options $options
+     * @param Options $options
      * @return $this
      */
     public function setOptions($options)
     {
-        if (is_array($options)) {
-            $this->options = new Options($options);
-        } elseif ($options instanceof Options) {
+        if ($options instanceof Options) {
             $this->options = $options;
-        } elseif (!empty($options)) {
-            throw new RuntimeException('Options must be an array or an `Options` object');
+        } else {
+            throw new RuntimeException('Options must be an `Options` object');
         }
 
         return $this;
