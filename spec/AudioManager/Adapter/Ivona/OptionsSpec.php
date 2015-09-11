@@ -11,4 +11,15 @@ class OptionsSpec extends ObjectBehavior
     {
         $this->shouldHaveType('AudioManager\Adapter\Ivona\Options');
     }
+
+    function it_set_userAgent()
+    {
+        $this->setUserAgent('Test')->shouldHaveType('AudioManager\Adapter\Ivona\Options');;
+        $this->getUserAgent()->shouldBe('Test');
+    }
+
+    function it_get_default_serAgent()
+    {
+        $this->getUserAgent()->shouldBe('TestClient 1.0');
+    }
 }

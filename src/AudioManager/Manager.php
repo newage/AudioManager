@@ -49,12 +49,11 @@ class Manager
     /**
      * Read audio from adapter
      * @param $text
-     * @param array $options
      * @return mixed
      */
-    public function read($text, $options = [])
+    public function read($text)
     {
-        return $this->getAdapter()->read($text, $options);
+        return $this->getAdapter()->read($text);
     }
 
     /**
