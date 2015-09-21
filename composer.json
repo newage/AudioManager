@@ -10,14 +10,15 @@
     "speech"
   ],
   "require": {
-    "php":  ">=5.5"
+    "php": ">=5.5"
   },
   "require-dev": {
-    "phpspec/phpspec":  "~2.0"
+    "phpunit/phpunit": "4.8.*"
   },
   "autoload": {
     "psr-0": {
-      "AudioManager": "src/"
+      "AudioManager": "src/",
+      "Tests\\AudioManager": "tests/"
     }
   }
 }

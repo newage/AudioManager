@@ -15,21 +15,6 @@ class Options
     protected $encoding;
 
     /**
-     * Constructor
-     * @param array $options
-     */
-    public function __construct(array $options = [])
-    {
-        foreach ($options as $name => $value) {
-            $name = strtolower($name);
-            $methodName = 'set' . ucfirst($name);
-            if (method_exists($this, $methodName)) {
-                $this->$methodName($value);
-            }
-        }
-    }
-
-    /**
      * Set language option
      * @param $language
      * @return $this

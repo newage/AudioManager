@@ -1,6 +1,7 @@
 <?php
 
 namespace AudioManager\Adapter\Ivona;
+use AudioManager\Exception\RuntimeException;
 
 /**
  * Simple authenticator with secret key and success key for Ivona adapter
@@ -9,14 +10,24 @@ namespace AudioManager\Adapter\Ivona;
 class Authenticate
 {
 
+    const SERVICE_TYPE_LIST = 'ListVoices';
+    const SERVICE_TYPE_SPEECH = 'CreateSpeech';
+
     protected $secretKey;
     protected $accessKey;
     protected $currentTime;
     protected $currentDate;
-    protected $payload;
+    protected $postData = [];
 
-    public function __construct()
+    /**
+     * Constructor
+     * @param $secretKey
+     * @param $accessKey
+     */
+    public function __construct($secretKey, $accessKey)
     {
+        $this->setSecretKey($secretKey);
+        $this->setAccessKey($accessKey);
         $this->currentTime = gmdate('Ymd\THis\Z', time());
         $this->currentDate = substr($this->currentTime, 0, 8);
     }
@@ -26,7 +37,7 @@ class Authenticate
      * @param string $secretKey
      * @return $this
      */
-    public function setSecretKey($secretKey)
+    protected function setSecretKey($secretKey)
     {
         $this->secretKey = $secretKey;
         return $this;
@@ -46,7 +57,7 @@ class Authenticate
      * @param string $accessKey
      * @return $this
      */
-    public function setAccessKey($accessKey)
+    protected function setAccessKey($accessKey)
     {
         $this->accessKey = $accessKey;
         return $this;
@@ -62,17 +73,38 @@ class Authenticate
     }
 
     /**
-     * Get authorization headers
+     * Get post data
      * @return array
      */
-    public function getHeader()
+    public function getPostData()
+    {
+        return $this->postData;
+    }
+
+    /**
+     * Set post data
+     * @param array $postData
+     * @return $this
+     */
+    public function setPostData(array $postData)
+    {
+        $this->postData = $postData;
+        return $this;
+    }
+
+    /**
+     * Get authorization headers
+     * @param string $requestType
+     * @return array
+     */
+    public function getHeader($requestType)
     {
         return [
             'X-Amz-Date: ' . $this->currentTime,
             'Authorization: AWS4-HMAC-SHA256 Credential='
                 . $this->getCredential()
                 . ',SignedHeaders=host,Signature='
-                . $this->getSignature()
+                . $this->createSignature($requestType)
         ];
     }
 
@@ -85,13 +117,14 @@ class Authenticate
     }
 
     /**
+     * Get canonical
      * @param      $service
      * @param null $payload
      * @return string
      */
-    private function getCanonicalRequest($service, $payload = null)
+    protected function getCanonicalRequest($service, $payload = null)
     {
-        $canonicalizedGetRequest =
+        $canonical =
             "POST" .
             "\n/$service" .
             "\n" .
@@ -99,20 +132,30 @@ class Authenticate
             "\n" .
             "\nhost" .
             "\n" . hash("sha256", $payload);
-        return $canonicalizedGetRequest;
+        return $canonical;
     }
 
-    private function getStringToSign($canonicalizedGetRequest)
+    /**
+     * Get string to sign
+     * @param $canonical
+     * @return string
+     */
+    protected function getStringToSign($canonical)
     {
         $stringToSign = "AWS4-HMAC-SHA256" .
             "\n$this->currentTime" .
             "\n$this->currentDate/eu-west-1/tts/aws4_request" .
-            "\n" . hash("sha256", $canonicalizedGetRequest);
+            "\n" . hash("sha256", $canonical);
 
         return $stringToSign;
     }
 
-    private function getSignature($stringToSign)
+    /**
+     * Get signature
+     * @param string $stringToSign
+     * @return string
+     */
+    protected function getSignature($stringToSign)
     {
         $dateKey = hash_hmac('sha256', $this->currentDate, "AWS4" . $this->getSecretKey(), true);
         $dateRegionKey = hash_hmac('sha256', "eu-west-1", $dateKey, true);
@@ -121,5 +164,38 @@ class Authenticate
         $signature = hash_hmac('sha256', $stringToSign, $signingKey);
 
         return $signature;
+    }
+
+    /**
+     * Create signature
+     * @param $requestType
+     * @return string
+     */
+    protected function createSignature($requestType)
+    {
+        if (empty($this->getPostData())) {
+            throw new RuntimeException('Need setup post data');
+        }
+
+        $obj = json_encode($this->getPostData());
+        $canonical = $this->getCanonicalRequest($this->checkServiceType($requestType), $obj);
+        $stringToSign = $this->getStringToSign($canonical);
+        return $this->getSignature($stringToSign);
+    }
+
+    /**
+     * Check request type
+     * @param string $requestType
+     * @return string
+     */
+    protected function checkServiceType($requestType)
+    {
+        $reflection = new \ReflectionObject($this);
+        $constants = $reflection->getConstants();
+        if (!in_array($requestType, $constants)) {
+            throw new RuntimeException('Request type does not supports');
+        }
+
+        return $requestType;
     }
 }

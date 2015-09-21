@@ -11,60 +11,58 @@ class Payload
     protected $options;
 
     /**
-     * @var Authenticate
-     */
-    protected $authenticate;
-
-    /**
      * @var array
      */
-    protected $postData;
+    protected $postData = [];
+
+    /**
+     * Constructor
+     * @param Options $options
+     */
+    public function __construct(Options $options)
+    {
+        $this->setOptions($options);
+    }
 
     /**
      * Get service headers
+     * @param $serviceType
      * @return array
      */
-    public function getHeaders()
+    public function getHeaders($serviceType)
     {
+        $this->getOptions()->getAuthenticate();
+        $this->getOptions()->getAuthenticate()->setPostData($this->getPostData());
+
         $headers = [
             'Content-Type: application/json',
             'Host: tts.eu-west-1.ivonacloud.com',
             'User-Agent: ' . $this->getOptions()->getUserAgent()
         ];
-        return array_merge($headers, $this->getAuthenticate()->getHeader());
+
+        return array_merge(
+            $headers,
+            $this->getOptions()->getAuthenticate()->getHeader($serviceType)
+        );
+    }
+
+    /**
+     * @param array $postData
+     * @return $this
+     */
+    public function setPostData($postData)
+    {
+        $this->postData = $postData;
+        return $this;
     }
 
     /**
      * Get post data for service
      * @return array
      */
-    public function getPost()
+    public function getPostData()
     {
-        if (empty($this->postData)) {
-            $this->postData = [];
-        }
-
         return $this->postData;
-    }
-    
-    /**
-     * Set authenticate object
-     * @param Authenticate $auth
-     * @return $this
-     */
-    public function setAuthenticate(Authenticate $auth)
-    {
-        $this->authenticate = $auth;
-        return $this;
-    }
-
-    /**
-     * Get authenticate object
-     * @return Authenticate
-     */
-    public function getAuthenticate()
-    {
-        return $this->authenticate;
     }
 
     /**

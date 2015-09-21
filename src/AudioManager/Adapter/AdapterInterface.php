@@ -21,11 +21,4 @@ interface AdapterInterface
      * @return array
      */
     public function getHeaders();
-
-    /**
-     * Set options for adapter
-     * @param array|Options $options
-     * @return $this
-     */
-    public function setOptions($options);
 }

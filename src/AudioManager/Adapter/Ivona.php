@@ -2,7 +2,6 @@
 
 namespace AudioManager\Adapter;
 
-use AudioManager\Adapter\Ivona\Authenticate;
 use AudioManager\Adapter\Ivona\Options;
 use AudioManager\Exception\RuntimeException;
 
@@ -25,11 +24,11 @@ class Ivona implements AdapterInterface
 
     /**
      * Constructor
-     * @param Authenticate $authenticate
+     * @param Options|array $options
      */
-    public function __construct(Authenticate $authenticate)
+    public function __construct($options)
     {
-        $this->setAuthenticate($authenticate);
+        $this->setOptions($options);
     }
 
     /**
@@ -86,20 +85,13 @@ class Ivona implements AdapterInterface
 
     /**
      * Set options
-     * @param array|Options $options
+     * @param Options $options
      * @return $this
      * @throw RuntimeException
      */
-    public function setOptions($options)
+    public function setOptions(Options $options)
     {
-        if (is_array($options)) {
-            $this->options = new Options($options);
-        } elseif ($options instanceof Options) {
-            $this->options = $options;
-        } elseif (!empty($options)) {
-            throw new RuntimeException('Options must be an array or an `Options` object');
-        }
-
+        $this->options = $options;
         return $this;
     }
 
@@ -112,26 +104,5 @@ class Ivona implements AdapterInterface
             throw new RuntimeException('Need set up options');
         }
         return $this->options;
-    }
-
-    /**
-     * Get authenticate object
-     * @return Authenticate
-     * @throws RuntimeException
-     */
-    public function getAuthenticate()
-    {
-        return $this->authenticate;
-    }
-
-    /**
-     * Set authenticate object
-     * @param Authenticate $authenticate
-     * @return $this
-     */
-    public function setAuthenticate(Authenticate $authenticate)
-    {
-        $this->authenticate = $authenticate;
-        return $this;
     }
 }
