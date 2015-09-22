@@ -1,6 +1,7 @@
 <?php
 
 namespace AudioManager\Adapter\Ivona;
+
 use AudioManager\Exception\RuntimeException;
 
 /**
@@ -9,9 +10,6 @@ use AudioManager\Exception\RuntimeException;
  */
 class Authenticate
 {
-
-    const SERVICE_TYPE_LIST = 'ListVoices';
-    const SERVICE_TYPE_SPEECH = 'CreateSpeech';
 
     protected $secretKey;
     protected $accessKey;
@@ -86,7 +84,7 @@ class Authenticate
      * @param array $postData
      * @return $this
      */
-    public function setPostData(array $postData)
+    public function setPostData($postData)
     {
         $this->postData = $postData;
         return $this;
@@ -94,17 +92,17 @@ class Authenticate
 
     /**
      * Get authorization headers
-     * @param string $requestType
+     * @param string $serviceType
      * @return array
      */
-    public function getHeader($requestType)
+    public function getHeader($serviceType)
     {
         return [
             'X-Amz-Date: ' . $this->currentTime,
             'Authorization: AWS4-HMAC-SHA256 Credential='
                 . $this->getCredential()
                 . ',SignedHeaders=host,Signature='
-                . $this->createSignature($requestType)
+                . $this->createSignature($serviceType)
         ];
     }
 
@@ -177,25 +175,8 @@ class Authenticate
             throw new RuntimeException('Need setup post data');
         }
 
-        $obj = json_encode($this->getPostData());
-        $canonical = $this->getCanonicalRequest($this->checkServiceType($requestType), $obj);
+        $canonical = $this->getCanonicalRequest($requestType, $this->getPostData());
         $stringToSign = $this->getStringToSign($canonical);
         return $this->getSignature($stringToSign);
-    }
-
-    /**
-     * Check request type
-     * @param string $requestType
-     * @return string
-     */
-    protected function checkServiceType($requestType)
-    {
-        $reflection = new \ReflectionObject($this);
-        $constants = $reflection->getConstants();
-        if (!in_array($requestType, $constants)) {
-            throw new RuntimeException('Request type does not supports');
-        }
-
-        return $requestType;
     }
 }

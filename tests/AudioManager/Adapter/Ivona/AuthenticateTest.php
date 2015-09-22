@@ -1,8 +1,7 @@
 <?php
 
-namespace Tests\AudioManager\Adapter\Ivona;
+namespace AudioManager\Adapter\Ivona;
 
-use AudioManager\Adapter\Ivona\Authenticate;
 use AudioManager\Exception\RuntimeException;
 
 class AuthenticateTest extends \PHPUnit_Framework_TestCase
@@ -69,38 +68,25 @@ class AuthenticateTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($credential, $credentialString);
     }
 
-    public function testServiceType()
-    {
-        $method = self::getMethod('checkServiceType');
-        $this->assertEquals(
-            Authenticate::SERVICE_TYPE_LIST,
-            $method->invoke($this->authenticate, Authenticate::SERVICE_TYPE_LIST)
-        );
-        $this->assertEquals(
-            Authenticate::SERVICE_TYPE_SPEECH,
-            $method->invoke($this->authenticate, Authenticate::SERVICE_TYPE_SPEECH)
-        );
-    }
-
     /**
      * @expectedException RuntimeException
      */
-    public function testServiceException()
+    public function testCreateSignatureException()
     {
-        $method = self::getMethod('checkServiceType');
-        $method->invoke($this->authenticate, 'anyService');
+        $method = self::getMethod('createSignature');
+        $method->invoke($this->authenticate, Payload::SERVICE_TYPE_SPEECH);
     }
-
-    public function testCreateSignature()
+    
+    public function testCreateHeader()
     {
         $currentTime = self::getProperty('currentTime');
         $currentData = self::getProperty('currentDate');
 
-        $this->authenticate->setPostData(['data' => true]);
-        $encodedData = json_encode($this->authenticate->getPostData());
+        $this->authenticate->setPostData(json_encode(['data' => true]));
+        $encodedData = $this->authenticate->getPostData();
 
         $canonical =
-            "POST\n/" . Authenticate::SERVICE_TYPE_SPEECH .
+            "POST\n/" . Payload::SERVICE_TYPE_SPEECH .
             "\n\nhost:tts.eu-west-1.ivonacloud.com\n" .
             "\nhost\n" . hash("sha256", $encodedData);
 
@@ -118,12 +104,20 @@ class AuthenticateTest extends \PHPUnit_Framework_TestCase
         $dateRegionKey = hash_hmac('sha256', "eu-west-1", $dateKey, true);
         $dateRegionServiceKey = hash_hmac('sha256', "tts", $dateRegionKey, true);
         $signingKey = hash_hmac('sha256', "aws4_request", $dateRegionServiceKey, true);
-        $expectSignature = hash_hmac('sha256', $stringToSign, $signingKey);
+        $signature = hash_hmac('sha256', $stringToSign, $signingKey);
 
-        $method = self::getMethod('createSignature');
-        $resultSignature = $method->invoke($this->authenticate, Authenticate::SERVICE_TYPE_SPEECH);
+        $credentialMethod = self::getMethod('getCredential');
+        $expectHeader = [
+            'X-Amz-Date: ' . $currentTime->getValue($this->authenticate),
+            'Authorization: AWS4-HMAC-SHA256 Credential='
+            . $credentialMethod->invoke($this->authenticate)
+            . ',SignedHeaders=host,Signature='
+            . $signature
+        ];
 
-        $this->assertEquals($expectSignature, $resultSignature);
+        $resultHeader = $this->authenticate->getHeader(Payload::SERVICE_TYPE_SPEECH);
+
+        $this->assertEquals($expectHeader, $resultHeader);
     }
 
 }

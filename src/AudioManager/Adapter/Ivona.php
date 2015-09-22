@@ -3,7 +3,7 @@
 namespace AudioManager\Adapter;
 
 use AudioManager\Adapter\Ivona\Options;
-use AudioManager\Exception\RuntimeException;
+use AudioManager\Adapter\Ivona\Payload;
 
 /**
  * Adapter for Ivona TTS
@@ -16,17 +16,11 @@ class Ivona implements AdapterInterface
     protected $headers = [];
     protected $options;
 
-    public $serviceUrl = "https://tts.eu-west-1.ivonacloud.com";
-    public $outputFormatCodec = 'MP3';
-    public $outputFormatSampleRate = '22050';
-    public $parametersRate = 'slow';
-    public $serviceHeaders = [];
-
     /**
      * Constructor
-     * @param Options|array $options
+     * @param Options $options
      */
-    public function __construct($options)
+    public function __construct(Options $options)
     {
         $this->setOptions($options);
     }
@@ -38,13 +32,15 @@ class Ivona implements AdapterInterface
      */
     public function read($text)
     {
+        $payload = new Payload($this->getOptions(), $text);
+
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_URL, $this->serviceUrl . '/CreateSpeech');
+        curl_setopt($curl, CURLOPT_URL, $payload->getServiceUrl());
         curl_setopt($curl, CURLOPT_POST, true);
 
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $payload);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $this->getServiceHeaders());
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $payload->getPayload());
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $payload->getHeaders());
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
 
         $response = curl_exec($curl);
@@ -54,30 +50,27 @@ class Ivona implements AdapterInterface
         return $response;
     }
 
-    public function setServiceHeaders()
+    /**
+     * Get available list voices
+     */
+    public function listVoices()
     {
-        $this->headers[] = 	'X-Amz-Date: '.$this->xAmzDate;
-        $this->headers[] = 	'Authorization: ' . 'AWS4-HMAC-SHA256 Credential='.$this->xAmzCredential.',SignedHeaders=host,Signature='.$signature;
-        $this->headers[] = 	'Content-Type: '. 'application/json';
-        $this->headers[] = 	'Host: ' . 'tts.eu-west-1.ivonacloud.com';
-        $this->headers[] = 	'User-Agent: ' . 'TestClient 1.0';
-        $this->headers[] = 	'Expect:';
+
     }
 
-    public function getServiceHeaders()
-    {
-        $this->setServiceHeaders();
-        return $this->headers;
-    }
-    
     /**
+     * Set headers after curl
      * @param array $headers
      */
-    public function setHeaders($headers)
+    protected function setHeaders($headers)
     {
         $this->headers = $headers;
     }
 
+    /**
+     * Get headers after curl
+     * @return array
+     */
     public function getHeaders()
     {
         return $this->headers;
@@ -100,9 +93,6 @@ class Ivona implements AdapterInterface
      */
     public function getOptions()
     {
-        if (null === $this->options) {
-            throw new RuntimeException('Need set up options');
-        }
         return $this->options;
     }
 }

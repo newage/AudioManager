@@ -1,9 +1,6 @@
 <?php
 
-namespace Test\AudioManager\Adapter\Ivona;
-
-use AudioManager\Adapter\Ivona\Options;
-use AudioManager\Adapter\Ivona\Authenticate;
+namespace AudioManager\Adapter\Ivona;
 
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {

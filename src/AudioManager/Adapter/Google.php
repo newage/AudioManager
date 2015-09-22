@@ -3,7 +3,6 @@
 namespace AudioManager\Adapter;
 
 use AudioManager\Adapter\Google\Options;
-use AudioManager\Exception\RuntimeException;
 
 /**
  * Google TTS adapter
@@ -14,6 +13,15 @@ class Google implements AdapterInterface
 
     protected $headers = [];
     protected $options;
+
+    /**
+     * Constructor
+     * @param Options $options
+     */
+    public function __construct(Options $options)
+    {
+        $this->setOptions($options);
+    }
 
     /**
      * @param string $query
@@ -62,7 +70,7 @@ class Google implements AdapterInterface
      * Set HTTP headers after read
      * @param array $headers
      */
-    public function setHeaders(array $headers)
+    protected function setHeaders(array $headers)
     {
         $this->headers = $headers;
     }
@@ -72,13 +80,9 @@ class Google implements AdapterInterface
      * @param Options $options
      * @return $this
      */
-    public function setOptions($options)
+    public function setOptions(Options $options)
     {
-        if ($options instanceof Options) {
-            $this->options = $options;
-        } else {
-            throw new RuntimeException('Options must be an `Options` object');
-        }
+        $this->options = $options;
 
         return $this;
     }
@@ -89,9 +93,6 @@ class Google implements AdapterInterface
      */
     public function getOptions()
     {
-        if (null === $this->options) {
-            throw new RuntimeException('Need set up options');
-        }
         return $this->options;
     }
 }

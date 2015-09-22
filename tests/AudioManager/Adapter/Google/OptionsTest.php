@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AudioManager\Adapter\Google;
+namespace AudioManager\Adapter\Google;
 
-use AudioManager\Adapter\Google\Options;
+use AudioManager\Exception\RuntimeException;
 
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {
@@ -31,5 +31,13 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
         $language = 'ru';
         $this->options->setLanguage($language);
         $this->assertEquals($language, $this->options->getLanguage());
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testLanguageException()
+    {
+        $this->options->getLanguage();
     }
 }

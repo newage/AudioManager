@@ -2,7 +2,7 @@
 
 namespace AudioManager\Adapter\Ivona;
 
-use AudioManager\Adapter\Ivona\Payload;
+use AudioManager\Exception\RuntimeException;
 
 class PayloadTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +15,31 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $options = new Options(new Authenticate('secret', 'access'));
-        $this->payload = new Payload($options);
+        $this->payload = new Payload($options, 'query');
+    }
+
+    /**
+     * @param $name
+     * @return \ReflectionMethod
+     */
+    protected static function getMethod($name)
+    {
+        $class = new \ReflectionClass('AudioManager\Adapter\Ivona\Payload');
+        $method = $class->getMethod($name);
+        $method->setAccessible(true);
+        return $method;
+    }
+
+    /**
+     * @param $name
+     * @return \ReflectionProperty
+     */
+    protected static function getProperty($name)
+    {
+        $class = new \ReflectionClass('AudioManager\Adapter\Ivona\Payload');
+        $property = $class->getProperty($name);
+        $property->setAccessible(true);
+        return $property;
     }
 
     public function testOptions()
@@ -23,11 +47,26 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->payload->getOptions() instanceof Options);
     }
 
-    public function testPostData()
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testServiceException()
     {
-        $postData = ['data' => true];
-        $this->payload->setPostData($postData);
-        $this->assertEquals($postData, $this->payload->getPostData());
+        $method = self::getMethod('checkServiceType');
+        $method->invoke($this->payload, 'anyService');
+    }
+
+    public function testServiceType()
+    {
+        $method = self::getMethod('checkServiceType');
+        $this->assertEquals(
+            Payload::SERVICE_TYPE_LIST,
+            $method->invoke($this->payload, Payload::SERVICE_TYPE_LIST)
+        );
+        $this->assertEquals(
+            Payload::SERVICE_TYPE_SPEECH,
+            $method->invoke($this->payload, Payload::SERVICE_TYPE_SPEECH)
+        );
     }
 
     public function testHeaders()
@@ -42,7 +81,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnSelf());
         $authenticate
             ->method('getHeader')
-            ->with($this->stringContains(Authenticate::SERVICE_TYPE_SPEECH))
+            ->with($this->stringContains(Payload::SERVICE_TYPE_SPEECH))
             ->will($this->returnValue([
                 'X-Amz-Date:',
                 'Authorization:'
@@ -71,7 +110,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->payload->setOptions($options);
-        $headers = $this->payload->getHeaders(Authenticate::SERVICE_TYPE_SPEECH);
+        $headers = $this->payload->getHeaders(Payload::SERVICE_TYPE_SPEECH);
         $this->assertEquals($expectedArray, $headers);
     }
 }
