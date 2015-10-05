@@ -3,4 +3,5 @@ vendor/*
 bin/*
 composer.*
 !composer.json
-clover.xml
+!build/coverage-checker.php
+build/*
