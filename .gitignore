@@ -3,3 +3,4 @@ vendor/*
 bin/*
 composer.*
 !composer.json
+clover.xml
