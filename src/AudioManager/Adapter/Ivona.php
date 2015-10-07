@@ -51,14 +51,6 @@ class Ivona implements AdapterInterface
     }
 
     /**
-     * Get available list voices
-     */
-    public function listVoices()
-    {
-
-    }
-
-    /**
      * Set headers after curl
      * @param array $headers
      */

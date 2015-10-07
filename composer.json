@@ -17,8 +17,7 @@
   },
   "autoload": {
     "psr-0": {
-      "AudioManager": "src/",
-      "Tests\\AudioManager": "tests/"
+      "AudioManager": "src/"
     }
   }
 }
