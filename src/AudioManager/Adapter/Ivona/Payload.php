@@ -85,9 +85,6 @@ class Payload
      */
     public function getPayload()
     {
-        if (!isset($this->payload)) {
-            throw new RuntimeException('Payload data did not created');
-        }
         return $this->payload;
     }
 

@@ -113,4 +113,11 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
         $headers = $this->payload->getHeaders(Payload::SERVICE_TYPE_SPEECH);
         $this->assertEquals($expectedArray, $headers);
     }
+
+    public function testGetServiceUrl()
+    {
+        $expectedUrl = 'https://tts.eu-west-1.ivonacloud.com/CreateSpeech';
+        $resultUrl = $this->payload->getServiceUrl();
+        $this->assertEquals($expectedUrl, $resultUrl);
+    }
 }
