@@ -3,8 +3,7 @@
 namespace AudioManager\Adapter;
 
 use AudioManager\Adapter\Ivona;
-use AudioManager\Adapter\Ivona\Options;
-use AudioManager\Adapter\Ivona\Authenticate;
+use AudioManager\Adapter\Options\Ivona as Options;
 
 class IvonaTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +15,7 @@ class IvonaTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->adapter = new Ivona(new Options(new Authenticate('secret', 'access')));
+        $this->adapter = new Ivona();
     }
 
     /**

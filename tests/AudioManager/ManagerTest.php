@@ -15,7 +15,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->manager = new Manager(new Google(new Google\Options()));
+        $this->manager = new Manager(new Google());
     }
 
     public function testConstructor()

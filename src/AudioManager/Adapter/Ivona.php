@@ -2,27 +2,34 @@
 
 namespace AudioManager\Adapter;
 
-use AudioManager\Adapter\Ivona\Options;
+use AudioManager\Adapter\Options\Ivona as Options;
 use AudioManager\Adapter\Ivona\Payload;
 
 /**
  * Adapter for Ivona TTS
  * @package AudioManager\Adapter
  */
-class Ivona implements AdapterInterface
+class Ivona extends AbstractAdapter implements AdapterInterface
 {
 
     protected $authenticate;
-    protected $headers = [];
-    protected $options;
 
     /**
-     * Constructor
-     * @param Options $options
+     * Get options object
+     * @return Options
      */
-    public function __construct(Options $options)
+    public function getOptions()
     {
-        $this->setOptions($options);
+        return $this->options;
+    }
+
+    /**
+     * Init options
+     * @return Options
+     */
+    protected function initOptions()
+    {
+        return new Options;
     }
 
     /**
@@ -48,43 +55,5 @@ class Ivona implements AdapterInterface
         curl_close($curl);
 
         return $response;
-    }
-
-    /**
-     * Set headers after curl
-     * @param array $headers
-     */
-    protected function setHeaders($headers)
-    {
-        $this->headers = $headers;
-    }
-
-    /**
-     * Get headers after curl
-     * @return array
-     */
-    public function getHeaders()
-    {
-        return $this->headers;
-    }
-
-    /**
-     * Set options
-     * @param Options $options
-     * @return $this
-     * @throw RuntimeException
-     */
-    public function setOptions(Options $options)
-    {
-        $this->options = $options;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOptions()
-    {
-        return $this->options;
     }
 }

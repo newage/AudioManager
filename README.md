@@ -8,3 +8,9 @@ A manager for a popular text-to-speech cloud services ([Google](https://translat
 [![Code Coverage](https://scrutinizer-ci.com/g/newage/AudioManager/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/newage/AudioManager/?branch=develop)
 [![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/newage/AudioManager/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/newage/AudioManager/)
 
+Manager
+$manager = new Manager(new Google());
+$manager->getAdapter()->getOptions()->setOptions([]);
+$manager->read();
+$manager->getHeaders();
+

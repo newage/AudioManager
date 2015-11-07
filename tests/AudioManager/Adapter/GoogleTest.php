@@ -3,7 +3,7 @@
 namespace AudioManager\Adapter;
 
 use AudioManager\Adapter\Google;
-use AudioManager\Adapter\Google\Options;
+use AudioManager\Adapter\Options\Google as Options;
 
 class GoogleTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +15,7 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->adapter = new Google(new Options());
+        $this->adapter = new Google();
     }
 
     /**
@@ -58,18 +58,8 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateUrlWithoutEncoding()
     {
-        $options = $this->getMockBuilder('AudioManager\Adapter\Google\Options')
-            ->disableOriginalConstructor()
-            ->setMethods(['hasEncoding', 'getLanguage'])
-            ->getMock();
-        $options
-            ->method('hasEncoding')
-            ->will($this->returnValue(false));
-        $options
-            ->method('getLanguage')
-            ->will($this->returnValue('en'));
+        $this->adapter->getOptions()->setLanguage('en');
 
-        $this->adapter->setOptions($options);
         $method = self::getMethod('createUrl');
         $resultUrl = $method->invoke($this->adapter, 'query');
         $expectedUrl = 'http://translate.google.com/translate_tts?ie=UTF-8&tl=en&q=query';
@@ -79,21 +69,9 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateUrlWithEncoding()
     {
-        $options = $this->getMockBuilder('AudioManager\Adapter\Google\Options')
-            ->disableOriginalConstructor()
-            ->setMethods(['hasEncoding', 'getEncoding', 'getLanguage'])
-            ->getMock();
-        $options
-            ->method('hasEncoding')
-            ->will($this->returnValue(true));
-        $options
-            ->method('getEncoding')
-            ->will($this->returnValue('WIN-1251'));
-        $options
-            ->method('getLanguage')
-            ->will($this->returnValue('en'));
+        $this->adapter->getOptions()->setLanguage('en');
+        $this->adapter->getOptions()->setEncoding('WIN-1251');
 
-        $this->adapter->setOptions($options);
         $method = self::getMethod('createUrl');
         $resultUrl = $method->invoke($this->adapter, 'query');
         $expectedUrl = 'http://translate.google.com/translate_tts?ie=WIN-1251&tl=en&q=query';

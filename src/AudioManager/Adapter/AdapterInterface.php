@@ -8,17 +8,16 @@ namespace AudioManager\Adapter;
  */
 interface AdapterInterface
 {
-
     /**
-     * Read audio from adapter
-     * @param string $text
+     * Read resource
+     * @param $text
      * @return mixed
      */
     public function read($text);
 
     /**
-     * Get headers after read
-     * @return array
+     * Get headers for resource
+     * @return mixed
      */
     public function getHeaders();
 }

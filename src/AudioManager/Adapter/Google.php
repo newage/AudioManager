@@ -2,27 +2,14 @@
 
 namespace AudioManager\Adapter;
 
-use AudioManager\Adapter\Google\Options;
+use AudioManager\Adapter\Options\Google as Options;
 
 /**
  * Google TTS adapter
  * @package AudioManager\Adapter
  */
-class Google implements AdapterInterface
+class Google extends AbstractAdapter implements AdapterInterface
 {
-
-    protected $headers = [];
-    protected $options;
-
-    /**
-     * Constructor
-     * @param Options $options
-     */
-    public function __construct(Options $options)
-    {
-        $this->setOptions($options);
-    }
-
     /**
      * @param string $query
      * @return mixed
@@ -57,42 +44,22 @@ class Google implements AdapterInterface
         );
         return $path;
     }
-    
-    /**
-     * Get HTTP headers after read
-     */
-    public function getHeaders()
-    {
-        return $this->headers;
-    }
 
     /**
-     * Set HTTP headers after read
-     * @param array $headers
-     */
-    protected function setHeaders(array $headers)
-    {
-        $this->headers = $headers;
-    }
-
-    /**
-     * Set options for google adapter
-     * @param Options $options
-     * @return $this
-     */
-    public function setOptions(Options $options)
-    {
-        $this->options = $options;
-
-        return $this;
-    }
-
-    /**
-     * Get options
+     * Get options for google adapter
      * @return Options
      */
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * Get options object
+     * @return Options
+     */
+    protected function initOptions()
+    {
+        return new Options();
     }
 }

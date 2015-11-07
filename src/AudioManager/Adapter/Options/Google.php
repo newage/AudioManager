@@ -1,6 +1,6 @@
 <?php
 
-namespace AudioManager\Adapter\Google;
+namespace AudioManager\Adapter\Options;
 
 use AudioManager\Exception\RuntimeException;
 
@@ -8,7 +8,7 @@ use AudioManager\Exception\RuntimeException;
  * Hold options for google adapter
  * @package AudioManager\Adapter\Google
  */
-class Options
+class Google
 {
 
     protected $language;

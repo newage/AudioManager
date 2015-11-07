@@ -3,6 +3,7 @@
 namespace AudioManager\Adapter\Ivona;
 
 use AudioManager\Exception\RuntimeException;
+use AudioManager\Adapter\Options\Ivona as Options;
 
 class PayloadTest extends \PHPUnit_Framework_TestCase
 {
@@ -89,7 +90,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
 
         $options = $this->getMockBuilder('AudioManager\Adapter\Ivona\Options')
             ->disableOriginalConstructor()
-            ->setMethods(['getAuthenticate', 'getPostData'])
+            ->setMethods(['getAuthenticate', 'getPostData', 'getUserAgent'])
             ->getMock();
         $options
             ->method('getAuthenticate')

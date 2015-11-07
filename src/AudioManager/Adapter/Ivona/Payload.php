@@ -2,8 +2,13 @@
 
 namespace AudioManager\Adapter\Ivona;
 
+use AudioManager\Adapter\Options\Ivona as Options;
 use AudioManager\Exception\RuntimeException;
 
+/***
+ * Class Payload
+ * @package AudioManager\Adapter\Ivona
+ */
 class Payload
 {
 

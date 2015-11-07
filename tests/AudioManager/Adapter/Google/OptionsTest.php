@@ -3,6 +3,7 @@
 namespace AudioManager\Adapter\Google;
 
 use AudioManager\Exception\RuntimeException;
+use AudioManager\Adapter\Options\Google as Options;
 
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {
