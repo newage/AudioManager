@@ -43,7 +43,10 @@ abstract class AbstractAdapter
      * Get options object
      * @return OptionsInterface
      */
-    abstract public function getOptions();
+    public function getOptions()
+    {
+        return $this->options;
+    }
 
     /**
      * Get headers after curl

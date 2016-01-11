@@ -7,6 +7,7 @@ use AudioManager\Adapter\Options\Google as Options;
 /**
  * Google TTS adapter
  * @package AudioManager\Adapter
+ * @method Options getOptions()
  */
 class Google extends AbstractAdapter implements AdapterInterface
 {
@@ -39,15 +40,6 @@ class Google extends AbstractAdapter implements AdapterInterface
             urlencode($query)
         );
         return $path;
-    }
-
-    /**
-     * Get options for google adapter
-     * @return Options
-     */
-    public function getOptions()
-    {
-        return $this->options;
     }
 
     /**

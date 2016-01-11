@@ -8,18 +8,10 @@ use AudioManager\Adapter\Ivona\Payload;
 /**
  * Adapter for Ivona TTS
  * @package AudioManager\Adapter
+ * @method Options getOptions()
  */
 class Ivona extends AbstractAdapter implements AdapterInterface
 {
-    /**
-     * Get options object
-     * @return Options
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
     /**
      * Init options
      * @return Options
