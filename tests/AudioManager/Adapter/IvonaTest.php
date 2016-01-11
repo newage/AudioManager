@@ -55,4 +55,20 @@ class IvonaTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($headers, $this->adapter->getHeaders());
     }
+
+    public function testRead()
+    {
+        $content = 'JSON';
+
+        $request = $this->getMockBuilder('AudioManager\Request\CurlRequest')
+            ->setMethods(['execute'])
+            ->getMock();
+        $request->method('execute')
+            ->will($this->returnValue($content));
+
+        $this->adapter->setHandle($request);
+        $result = $this->adapter->read('text');
+
+        $this->equalTo($content, $result);
+    }
 }

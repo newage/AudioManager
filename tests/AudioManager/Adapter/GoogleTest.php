@@ -4,6 +4,7 @@ namespace AudioManager\Adapter;
 
 use AudioManager\Adapter\Google;
 use AudioManager\Adapter\Options\Google as Options;
+use AudioManager\Request\CurlRequest;
 
 class GoogleTest extends \PHPUnit_Framework_TestCase
 {
@@ -77,5 +78,22 @@ class GoogleTest extends \PHPUnit_Framework_TestCase
         $expectedUrl = 'http://translate.google.com/translate_tts?ie=WIN-1251&tl=en&q=query';
 
         $this->assertEquals($expectedUrl, $resultUrl);
+    }
+
+    public function testRead()
+    {
+        $content = 'JSON';
+
+        $request = $this->getMockBuilder('AudioManager\Request\CurlRequest')
+            ->setMethods(['execute'])
+            ->getMock();
+        $request->method('execute')
+            ->will($this->returnValue($content));
+
+        $this->adapter->getOptions()->setLanguage('en');
+        $this->adapter->setHandle($request);
+        $result = $this->adapter->read('text');
+
+        $this->assertEquals($content, $result);
     }
 }

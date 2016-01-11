@@ -16,15 +16,11 @@ class Google extends AbstractAdapter implements AdapterInterface
      */
     public function read($query)
     {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_URL, $this->createUrl($query));
-
-        $response = curl_exec($curl);
-        $this->setHeaders(curl_getinfo($curl));
-
-        curl_close($curl);
-
+        $handle = $this->getHandle();
+        $handle->setUrl($this->createUrl($query));
+        $handle->setOption(CURLOPT_RETURNTRANSFER, 1);
+        $response = $handle->execute();
+        $this->setHeaders($handle->getInfo());
         return $response;
     }
 

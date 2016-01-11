@@ -11,9 +11,6 @@ use AudioManager\Adapter\Ivona\Payload;
  */
 class Ivona extends AbstractAdapter implements AdapterInterface
 {
-
-    protected $authenticate;
-
     /**
      * Get options object
      * @return Options
@@ -41,19 +38,17 @@ class Ivona extends AbstractAdapter implements AdapterInterface
     {
         $payload = new Payload($this->getOptions(), $text);
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_URL, $payload->getServiceUrl());
-        curl_setopt($curl, CURLOPT_POST, true);
+        $handle = $this->getHandle();
+        $handle->setUrl($payload->getServiceUrl());
+        $handle->setOption(CURLOPT_RETURNTRANSFER, 1);
+        $handle->setOption(CURLOPT_POST, true);
 
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $payload->getPayload());
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $payload->getHeaders());
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $handle->setOption(CURLOPT_POSTFIELDS, $payload->getPayload());
+        $handle->setOption(CURLOPT_HTTPHEADER, $payload->getHeaders());
+        $handle->setOption(CURLOPT_SSL_VERIFYPEER, false);
 
-        $response = curl_exec($curl);
-        $this->setHeaders(curl_getinfo($curl));
-        curl_close($curl);
-
+        $response = $handle->execute();
+        $this->setHeaders($handle->getInfo());
         return $response;
     }
 }
