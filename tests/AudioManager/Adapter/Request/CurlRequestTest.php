@@ -19,7 +19,7 @@ class CurlRequestTest extends \PHPUnit_Framework_TestCase
     public function testSetUrl()
     {
         $response = $this->request->setUrl('http://url');
-        $this->assertTrue($response);
+        $this->assertTrue($response instanceof CurlRequest);
     }
 
     public function testDestruct()

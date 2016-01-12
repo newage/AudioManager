@@ -19,7 +19,7 @@ interface RequestInterface
     /**
      * Set url
      * @param $url
-     * @return mixed
+     * @return $this
      */
     public function setUrl($url);
 

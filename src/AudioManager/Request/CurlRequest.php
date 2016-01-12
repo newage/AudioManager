@@ -44,12 +44,13 @@ class CurlRequest implements RequestInterface
     /**
      * Set option
      * @param string $name
-     * @param string|int $value
-     * @return bool
+     * @param mixed $value
+     * @return $this
      */
     public function setOption($name, $value)
     {
-        return curl_setopt($this->handle, $name, $value);
+        curl_setopt($this->handle, $name, $value);
+        return $this;
     }
 
     /**

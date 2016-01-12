@@ -21,9 +21,9 @@ class Payload
     protected $options;
 
     /**
-     * @var array
+     * @var string
      */
-    protected $payload = [];
+    protected $payload;
 
     protected $queryText;
     protected $serviceUrl = "https://tts.eu-west-1.ivonacloud.com";
@@ -67,7 +67,18 @@ class Payload
         $payloadArray->Voice['Name'] = 'Salli';
         $payloadArray->Parameters['Rate'] = $this->parametersRate;
 
-        $this->payload = json_encode($payloadArray);
+        $this->setPayload(json_encode($payloadArray));
+        return $this;
+    }
+
+    /**
+     * Set payload
+     * @param $payload
+     * @return $this
+     */
+    public function setPayload($payload)
+    {
+        $this->payload = $payload;
         return $this;
     }
 
