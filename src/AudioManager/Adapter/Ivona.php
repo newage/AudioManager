@@ -63,7 +63,7 @@ class Ivona extends AbstractAdapter implements AdapterInterface
     }
 
     /**
-     * @param $text
+     * @param string $text
      * @return Payload
      */
     public function getPayload($text)
