@@ -13,6 +13,11 @@ use AudioManager\Adapter\Ivona\Payload;
 class Ivona extends AbstractAdapter implements AdapterInterface
 {
     /**
+     * @var Payload
+     */
+    protected $payload;
+
+    /**
      * Init options
      * @return Options
      */
@@ -28,7 +33,7 @@ class Ivona extends AbstractAdapter implements AdapterInterface
      */
     public function read($text)
     {
-        $payload = new Payload($this->getOptions(), $text);
+        $payload = $this->getPayload($text);
 
         $handle = $this->getHandle();
         $handle->setUrl($payload->getServiceUrl());
@@ -42,5 +47,38 @@ class Ivona extends AbstractAdapter implements AdapterInterface
         $response = $handle->execute();
         $this->setHeaders($handle->getInfo());
         return $response;
+    }
+
+    /**
+     * Initialize payload
+     * @param $text
+     * @return Payload
+     */
+    private function initPayload($text)
+    {
+        $payload = new Payload();
+        $payload->setOptions($this->getOptions());
+        $payload->setQueryText($text);
+        return $payload->createPayload();
+    }
+
+    /**
+     * @param $text
+     * @return Payload
+     */
+    public function getPayload($text)
+    {
+        if (!$this->payload instanceof Payload) {
+            $this->payload = $this->initPayload($text);
+        }
+        return $this->payload;
+    }
+
+    /**
+     * @param Payload $payload
+     */
+    public function setPayload(Payload $payload)
+    {
+        $this->payload = $payload;
     }
 }

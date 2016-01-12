@@ -32,18 +32,6 @@ class Payload
     protected $parametersRate = 'slow';
 
     /**
-     * Constructor
-     * @param Options $options
-     * @param string $queryText
-     */
-    public function __construct(Options $options, $queryText)
-    {
-        $this->setOptions($options);
-        $this->queryText = $queryText;
-        $this->createPayload();
-    }
-
-    /**
      * Get service headers
      * @return array
      */
@@ -66,12 +54,11 @@ class Payload
     /**
      * Create json object with post parameters
      * @return $this
-     * @internal param array $payload
      */
-    protected function createPayload()
+    public function createPayload()
     {
         $payloadArray = (object)array();
-        $payloadArray->Input['Data'] = $this->queryText;
+        $payloadArray->Input['Data'] = $this->getQueryText();
         $payloadArray->Input['Type'] = 'text/plain';
 
         $payloadArray->OutputFormat['Codec'] = $this->outputFormatCodec;
@@ -134,5 +121,24 @@ class Payload
     {
         $this->options = $options;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQueryText()
+    {
+        if (empty($this->queryText)) {
+            throw new \RuntimeException('Need set query text');
+        }
+        return $this->queryText;
+    }
+
+    /**
+     * @param string $queryText
+     */
+    public function setQueryText($queryText)
+    {
+        $this->queryText = $queryText;
     }
 }

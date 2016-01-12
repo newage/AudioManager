@@ -9,7 +9,7 @@ class IvonaTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Google
+     * @var Ivona
      */
     protected $adapter;
 
@@ -66,9 +66,20 @@ class IvonaTest extends \PHPUnit_Framework_TestCase
         $request->method('execute')
             ->will($this->returnValue($content));
 
+        $payload = $this->getMockBuilder('AudioManager\Adapter\Ivona\Payload')
+            ->setMethods(['getServiceUrl', 'getPayload', 'getHeaders'])
+            ->getMock();
+        $payload->method('getServiceUrl')
+            ->will($this->returnValue('http://'));
+        $payload->method('getPayload')
+            ->will($this->returnValue('{"payload":"json"}'));
+        $payload->method('getHeaders')
+            ->will($this->returnValue([]));
+
         $this->adapter->setHandle($request);
+        $this->adapter->setPayload($payload);
         $result = $this->adapter->read('text');
 
-        $this->equalTo($content, $result);
+        $this->assertEquals($content, $result);
     }
 }
