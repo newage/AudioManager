@@ -3,6 +3,7 @@
 namespace AudioManager\Adapter\Ivona;
 
 use AudioManager\Exception\RuntimeException;
+use AudioManager\Adapter\Options\Ivona as Options;
 
 class PayloadTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,8 +15,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $options = new Options(new Authenticate('secret', 'access'));
-        $this->payload = new Payload($options, 'query');
+        $this->payload = new Payload();
     }
 
     /**
@@ -44,9 +44,19 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
 
     public function testOptions()
     {
+        $options = new Options();
+        $this->payload->setOptions($options);
         $this->assertTrue($this->payload->getOptions() instanceof Options);
     }
 
+    public function testQueryText()
+    {
+        $queryText = 'queryText';
+        $this->payload->setQueryText($queryText);
+
+        $this->assertEquals($queryText, $this->payload->getQueryText());
+    }
+    
     /**
      * @expectedException RuntimeException
      */
@@ -89,7 +99,7 @@ class PayloadTest extends \PHPUnit_Framework_TestCase
 
         $options = $this->getMockBuilder('AudioManager\Adapter\Ivona\Options')
             ->disableOriginalConstructor()
-            ->setMethods(['getAuthenticate', 'getPostData'])
+            ->setMethods(['getAuthenticate', 'getPostData', 'getUserAgent'])
             ->getMock();
         $options
             ->method('getAuthenticate')

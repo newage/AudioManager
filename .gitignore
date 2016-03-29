@@ -3,5 +3,6 @@ vendor/*
 bin/*
 composer.*
 !composer.json
+!composer.lock
 !build/coverage-checker.php
 build/*

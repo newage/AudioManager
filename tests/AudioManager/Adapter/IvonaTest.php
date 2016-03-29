@@ -3,20 +3,19 @@
 namespace AudioManager\Adapter;
 
 use AudioManager\Adapter\Ivona;
-use AudioManager\Adapter\Ivona\Options;
-use AudioManager\Adapter\Ivona\Authenticate;
+use AudioManager\Adapter\Options\Ivona as Options;
 
 class IvonaTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     * @var Google
+     * @var Ivona
      */
     protected $adapter;
 
     public function setUp()
     {
-        $this->adapter = new Ivona(new Options(new Authenticate('secret', 'access')));
+        $this->adapter = new Ivona();
     }
 
     /**
@@ -55,5 +54,32 @@ class IvonaTest extends \PHPUnit_Framework_TestCase
         $method->invoke($this->adapter, $headers);
 
         $this->assertEquals($headers, $this->adapter->getHeaders());
+    }
+
+    public function testRead()
+    {
+        $content = 'JSON';
+
+        $request = $this->getMockBuilder('AudioManager\Request\CurlRequest')
+            ->setMethods(['execute'])
+            ->getMock();
+        $request->method('execute')
+            ->will($this->returnValue($content));
+
+        $payload = $this->getMockBuilder('AudioManager\Adapter\Ivona\Payload')
+            ->setMethods(['getServiceUrl', 'getPayload', 'getHeaders'])
+            ->getMock();
+        $payload->method('getServiceUrl')
+            ->will($this->returnValue('http://'));
+        $payload->method('getPayload')
+            ->will($this->returnValue('{"payload":"json"}'));
+        $payload->method('getHeaders')
+            ->will($this->returnValue([]));
+
+        $this->adapter->setHandle($request);
+        $this->adapter->setPayload($payload);
+        $result = $this->adapter->read('text');
+
+        $this->assertEquals($content, $result);
     }
 }

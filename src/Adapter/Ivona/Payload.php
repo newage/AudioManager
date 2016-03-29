@@ -2,8 +2,13 @@
 
 namespace AudioManager\Adapter\Ivona;
 
+use AudioManager\Adapter\Options\Ivona as Options;
 use AudioManager\Exception\RuntimeException;
 
+/***
+ * Class Payload
+ * @package AudioManager\Adapter\Ivona
+ */
 class Payload
 {
 
@@ -16,27 +21,15 @@ class Payload
     protected $options;
 
     /**
-     * @var array
+     * @var string
      */
-    protected $payload = [];
+    protected $payload;
 
     protected $queryText;
     protected $serviceUrl = "https://tts.eu-west-1.ivonacloud.com";
     protected $outputFormatCodec = 'MP3';
     protected $outputSampleRate = '22050';
     protected $parametersRate = 'slow';
-
-    /**
-     * Constructor
-     * @param Options $options
-     * @param string $queryText
-     */
-    public function __construct(Options $options, $queryText)
-    {
-        $this->setOptions($options);
-        $this->queryText = $queryText;
-        $this->createPayload();
-    }
 
     /**
      * Get service headers
@@ -61,12 +54,11 @@ class Payload
     /**
      * Create json object with post parameters
      * @return $this
-     * @internal param array $payload
      */
-    protected function createPayload()
+    public function createPayload()
     {
         $payloadArray = (object)array();
-        $payloadArray->Input['Data'] = $this->queryText;
+        $payloadArray->Input['Data'] = $this->getQueryText();
         $payloadArray->Input['Type'] = 'text/plain';
 
         $payloadArray->OutputFormat['Codec'] = $this->outputFormatCodec;
@@ -75,7 +67,18 @@ class Payload
         $payloadArray->Voice['Name'] = 'Salli';
         $payloadArray->Parameters['Rate'] = $this->parametersRate;
 
-        $this->payload = json_encode($payloadArray);
+        $this->setPayload(json_encode($payloadArray));
+        return $this;
+    }
+
+    /**
+     * Set payload
+     * @param $payload
+     * @return $this
+     */
+    public function setPayload($payload)
+    {
+        $this->payload = $payload;
         return $this;
     }
 
@@ -129,5 +132,24 @@ class Payload
     {
         $this->options = $options;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getQueryText()
+    {
+        if (empty($this->queryText)) {
+            throw new \RuntimeException('Need set query text');
+        }
+        return $this->queryText;
+    }
+
+    /**
+     * @param string $queryText
+     */
+    public function setQueryText($queryText)
+    {
+        $this->queryText = $queryText;
     }
 }

@@ -3,6 +3,7 @@
 namespace AudioManager\Adapter\Google;
 
 use AudioManager\Exception\RuntimeException;
+use AudioManager\Adapter\Options\Google as Options;
 
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,19 +18,21 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
         $this->options = new Options();
     }
 
-    public function testEncoding()
+    public function testEncodingOption()
     {
         $encoding = 'UTF-8';
         $this->assertFalse($this->options->hasEncoding());
-        $this->options->setEncoding($encoding);
+        $this->options->setOptions(['encoding' => $encoding]);
         $this->assertTrue($this->options->hasEncoding());
         $this->assertEquals($encoding, $this->options->getEncoding());
     }
 
-    public function testLanguage()
+    public function testLanguageOption()
     {
-        $language = 'ru';
-        $this->options->setLanguage($language);
+        $language = 'en';
+        $this->assertFalse($this->options->hasLanguage());
+        $this->options->setOptions(['language' => $language]);
+        $this->assertTrue($this->options->hasLanguage());
         $this->assertEquals($language, $this->options->getLanguage());
     }
 
@@ -39,5 +42,13 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     public function testLanguageException()
     {
         $this->options->getLanguage();
+    }
+
+    /**
+     * @expectedException RuntimeException
+     */
+    public function testOptionsException()
+    {
+        $this->options->setOption('test', 'value');
     }
 }

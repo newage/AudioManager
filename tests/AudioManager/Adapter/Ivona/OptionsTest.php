@@ -2,6 +2,8 @@
 
 namespace AudioManager\Adapter\Ivona;
 
+use AudioManager\Adapter\Options\Ivona as Options;
+
 class OptionsTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -11,9 +13,7 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $secretKey = 'secret';
-        $accessKey = 'access';
-        $this->options = new Options(new Authenticate($secretKey, $accessKey));
+        $this->options = new Options();
     }
 
     public function testUserAgent()
@@ -22,6 +22,20 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Options::DEFAULT_USERAGENT, $this->options->getUserAgent());
         $this->options->setUserAgent($userAgent);
         $this->assertEquals($userAgent, $this->options->getUserAgent());
+    }
+
+    public function testSecretKey()
+    {
+        $secretKey = 'secret';
+        $this->options->setSecretKey($secretKey);
+        $this->assertEquals($secretKey, $this->options->getSecretKey());
+    }
+
+    public function testAccessKey()
+    {
+        $accessKey = 'access';
+        $this->options->setAccessKey($accessKey);
+        $this->assertEquals($accessKey, $this->options->getAccessKey());
     }
 
     public function testGetAuthenticate()
