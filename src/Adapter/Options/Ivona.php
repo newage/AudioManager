@@ -8,7 +8,7 @@ use AudioManager\Adapter\Ivona\Authenticate;
  * Class Ivona
  * @package AudioManager\Adapter\Options
  */
-class Ivona
+class Ivona extends AbstractOptions
 {
 
     const DEFAULT_USERAGENT = 'TestClient 1.0';

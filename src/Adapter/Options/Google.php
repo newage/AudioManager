@@ -8,7 +8,7 @@ use AudioManager\Exception\RuntimeException;
  * Hold options for google adapter
  * @package AudioManager\Adapter\Google
  */
-class Google
+class Google extends AbstractOptions
 {
 
     protected $language;
@@ -35,6 +35,15 @@ class Google
             throw new RuntimeException('Need add the language option for google adapter');
         }
         return $this->language;
+    }
+
+    /**
+     * Has encoding option
+     * @return bool
+     */
+    public function hasLanguage()
+    {
+        return null !== $this->language;
     }
 
     /**
