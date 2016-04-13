@@ -31,6 +31,11 @@ class Ivona extends AbstractOptions
     protected $accessKey;
 
     /**
+     * @var Authenticate
+     */
+    protected $authenticate;
+
+    /**
      * Set user agent
      * @param $value
      * @return $this
@@ -91,6 +96,9 @@ class Ivona extends AbstractOptions
      */
     public function getAuthenticate()
     {
-        return new Authenticate($this->getSecretKey(), $this->getAccessKey());
+        if ($this->authenticate === null) {
+            $this->authenticate = new Authenticate($this->getSecretKey(), $this->getAccessKey());
+        }
+        return $this->authenticate;
     }
 }
