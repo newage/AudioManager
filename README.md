@@ -10,21 +10,21 @@ A manager for a popular text-to-speech cloud services ([Google](https://translat
 
 ## Call manager
 
-    $adapter = new Google();
-    $adapter->setOptions([
-        'language' => 'en',
-        'encoding' => 'UTF-8'
-    ]);
+Setup Google adapter
 
-or
+    $adapter = new \AudioManager\Adapter\Google();
+    $adapter->getOptions()->setLanguage('en');
+    $adapter->getOptions()->setEncoding('UTF-8');
 
-    $adapter = new Google();
-    $adapter->setLanguage('en');
-    $adapter->setEncoding('UTF-8');
+Setup Ivona adapter
 
-Set adapter to manager
+    $adapter = new \AudioManager\Adapter\Ivona();
+    $adapter->getOptions()->setAccessKey('...');
+    $adapter->getOptions()->setSecretKey('...');
 
-    $manager = new Manager($adapter);
+Setup adapter to manager
+
+    $manager = new \AudioManager\Manager($adapter);
     $audioContent = $manager->read('text');
     $manager->getHeaders();
 
