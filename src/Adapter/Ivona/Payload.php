@@ -14,6 +14,8 @@ class Payload
 
     const SERVICE_TYPE_LIST = 'ListVoices';
     const SERVICE_TYPE_SPEECH = 'CreateSpeech';
+    const DEFAULT_EN_VOICE = 'Salli';
+    const DEFAULT_RU_VOICE = 'Tatyana';
 
     /**
      * @var Options
@@ -63,8 +65,14 @@ class Payload
 
         $payloadArray->OutputFormat['Codec'] = $this->outputFormatCodec;
         $payloadArray->OutputFormat['SampleRate'] = (int) $this->outputSampleRate;
-        $payloadArray->Voice['Language'] = 'en-US';
-        $payloadArray->Voice['Name'] = 'Salli';
+        $lang = 'en-US';
+        $voice = static::DEFAULT_EN_VOICE;
+        if ($this->isRussian()) {
+            $lang = 'ru-RU';
+            $voice = static::DEFAULT_RU_VOICE;
+        }
+        $payloadArray->Voice['Language'] = $lang;
+        $payloadArray->Voice['Name'] = $voice;
         $payloadArray->Parameters['Rate'] = $this->parametersRate;
 
         $this->setPayload(json_encode($payloadArray));
@@ -98,6 +106,17 @@ class Payload
     public function getServiceUrl()
     {
         return $this->serviceUrl . '/' . self::SERVICE_TYPE_SPEECH;
+    }
+
+    /**
+     * @return array
+     */
+    public function isRussian()
+    {
+        $matches = [];
+        preg_match('/[а-яё]+/ui', $this->queryText, $matches);
+
+        return !empty($matches);
     }
 
     /**
