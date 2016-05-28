@@ -36,6 +36,31 @@ class Ivona extends AbstractOptions
     protected $authenticate;
 
     /**
+     * @var string
+     */
+    protected $language = 'en-US';
+
+    /**
+     * @var string
+     */
+    protected $voice = 'Salli';
+
+    /**
+     * @var string
+     */
+    protected $outputFormatCodec = 'MP3';
+
+    /**
+     * @var string
+     */
+    protected $outputSampleRate = '22050';
+
+    /**
+     * @var string
+     */
+    protected $parametersRate = 'slow';
+
+    /**
      * Set user agent
      * @param $value
      * @return $this
@@ -100,5 +125,85 @@ class Ivona extends AbstractOptions
             $this->authenticate = new Authenticate($this->getSecretKey(), $this->getAccessKey());
         }
         return $this->authenticate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param string $language
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVoice()
+    {
+        return $this->voice;
+    }
+
+    /**
+     * @param string $voice
+     */
+    public function setVoice($voice)
+    {
+        $this->voice = $voice;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOutputFormatCodec()
+    {
+        return $this->outputFormatCodec;
+    }
+
+    /**
+     * @param string $outputFormatCodec
+     */
+    public function setOutputFormatCodec($outputFormatCodec)
+    {
+        $this->outputFormatCodec = $outputFormatCodec;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOutputSampleRate()
+    {
+        return $this->outputSampleRate;
+    }
+
+    /**
+     * @param string $outputSampleRate
+     */
+    public function setOutputSampleRate($outputSampleRate)
+    {
+        $this->outputSampleRate = $outputSampleRate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getParametersRate()
+    {
+        return $this->parametersRate;
+    }
+
+    /**
+     * @param string $parametersRate
+     */
+    public function setParametersRate($parametersRate)
+    {
+        $this->parametersRate = $parametersRate;
     }
 }

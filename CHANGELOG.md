@@ -7,8 +7,8 @@ Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) princip
 ## [1.1.0] - 2016-05-28
 
 ### Added
-- New option of `Ivona` for choice a voice and languages.
+- New options of `Ivona`.
 - More information in `README`.
 
 ### Fixed
-- Fixed to get headers for `Ivona` adapter.
+- Fixed to get headers from adapters.

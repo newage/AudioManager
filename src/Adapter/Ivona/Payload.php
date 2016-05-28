@@ -11,11 +11,8 @@ use AudioManager\Exception\RuntimeException;
  */
 class Payload
 {
-
     const SERVICE_TYPE_LIST = 'ListVoices';
     const SERVICE_TYPE_SPEECH = 'CreateSpeech';
-    const DEFAULT_EN_VOICE = 'Salli';
-    const DEFAULT_RU_VOICE = 'Tatyana';
 
     /**
      * @var Options
@@ -29,9 +26,6 @@ class Payload
 
     protected $queryText;
     protected $serviceUrl = "https://tts.eu-west-1.ivonacloud.com";
-    protected $outputFormatCodec = 'MP3';
-    protected $outputSampleRate = '22050';
-    protected $parametersRate = 'slow';
 
     /**
      * Get service headers
@@ -63,17 +57,11 @@ class Payload
         $payloadArray->Input['Data'] = $this->getQueryText();
         $payloadArray->Input['Type'] = 'text/plain';
 
-        $payloadArray->OutputFormat['Codec'] = $this->outputFormatCodec;
-        $payloadArray->OutputFormat['SampleRate'] = (int) $this->outputSampleRate;
-        $lang = 'en-US';
-        $voice = static::DEFAULT_EN_VOICE;
-        if ($this->isRussian()) {
-            $lang = 'ru-RU';
-            $voice = static::DEFAULT_RU_VOICE;
-        }
-        $payloadArray->Voice['Language'] = $lang;
-        $payloadArray->Voice['Name'] = $voice;
-        $payloadArray->Parameters['Rate'] = $this->parametersRate;
+        $payloadArray->OutputFormat['Codec'] = $this->getOptions()->getOutputFormatCodec();
+        $payloadArray->OutputFormat['SampleRate'] = (int)$this->getOptions()->getOutputSampleRate();
+        $payloadArray->Voice['Language'] = $this->getOptions()->getLanguage();
+        $payloadArray->Voice['Name'] = $this->getOptions()->getVoice();
+        $payloadArray->Parameters['Rate'] = $this->getOptions()->getParametersRate();
 
         $this->setPayload(json_encode($payloadArray));
         return $this;
@@ -106,17 +94,6 @@ class Payload
     public function getServiceUrl()
     {
         return $this->serviceUrl . '/' . self::SERVICE_TYPE_SPEECH;
-    }
-
-    /**
-     * @return array
-     */
-    public function isRussian()
-    {
-        $matches = [];
-        preg_match('/[а-яё]+/ui', $this->queryText, $matches);
-
-        return !empty($matches);
     }
 
     /**

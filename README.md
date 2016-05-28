@@ -32,6 +32,11 @@ Setup an `Ivona` adapter
     $adapter = new \AudioManager\Adapter\Ivona();
     $adapter->getOptions()->setAccessKey('...');
     $adapter->getOptions()->setSecretKey('...');
+    $adapter->getOptions()->setLanguage('...'); //Default 'en-US'
+    $adapter->getOptions()->setVoice('...'); //Default 'Salli'
+    $adapter->getOptions()->setOutputFormatCodec('...'); //Default 'MP3'
+    $adapter->getOptions()->setOutputSampleRate('...'); //Default '22050'
+    $adapter->getOptions()->setParametersRate('...'); //Default 'slow'
 
 Setup an adapter to manager
 
