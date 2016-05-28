@@ -64,12 +64,15 @@ class CurlRequest implements RequestInterface
 
     /**
      * Get info from request
-     * @param string $name
+     * @param int $opt
      * @return mixed
      */
-    public function getInfo($name = null)
+    public function getInfo($opt = null)
     {
-        return curl_getinfo($this->handle, $name);
+        if ($opt !== null) {
+            return curl_getinfo($this->handle, $opt);
+        }
+        return curl_getinfo($this->handle);
     }
 
     /**
