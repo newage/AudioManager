@@ -42,4 +42,39 @@ class OptionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->options->getAuthenticate() instanceof Authenticate);
     }
+
+    public function testGetLanguage()
+    {
+        $language = 'ru-RU';
+        $this->options->setLanguage($language);
+        $this->assertEquals($language, $this->options->getLanguage());
+    }
+
+    public function testGetVoice()
+    {
+        $voice = 'Anna';
+        $this->options->setVoice($voice);
+        $this->assertEquals($voice, $this->options->getVoice());
+    }
+
+    public function testGetOutputFormatCodec()
+    {
+        $format = 'MP3';
+        $this->options->setOutputFormatCodec($format);
+        $this->assertEquals($format, $this->options->getOutputFormatCodec());
+    }
+
+    public function testGetOutputSampleRate()
+    {
+        $rate = '44100';
+        $this->options->setOutputSampleRate($rate);
+        $this->assertEquals($rate, $this->options->getOutputSampleRate());
+    }
+
+    public function testGetParametersRate()
+    {
+        $rate = 'slow';
+        $this->options->setParametersRate($rate);
+        $this->assertEquals($rate, $this->options->getParametersRate());
+    }
 }
