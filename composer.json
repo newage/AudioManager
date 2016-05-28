@@ -1,13 +1,20 @@
 {
-  "config": {
-    "bin-dir": "bin/"
-  },
   "name": "newage/audio-manager",
+  "type": "library",
   "description": "Audio Manager for text-to-speech cloud services",
   "license": "MIT",
   "keywords": [
     "tts",
     "speech"
+  ],
+  "homepage": "https://github.com/newage/AudioManager",
+  "authors": [
+    {
+      "name": "Vadim Leontiev",
+      "email": "vadim.leontiev@gmail.com",
+      "homepage": "https://github.com/newage",
+      "role": "Developer"
+    }
   ],
   "require": {
     "php": ">=5.5"
@@ -21,5 +28,15 @@
     "psr-4": {
       "AudioManager\\": "src/"
     }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.1.x-dev"
+    }
+  },
+  "scripts": {
+    "test": "php vendor/bin/phpunit",
+    "cs": "php vendor/bin/phpcs src --standard=PSR2 --colors",
+    "cs-fix": "php vendor/bin/phpcbf src --standard=PSR2 --colors"
   }
 }
