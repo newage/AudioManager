@@ -69,7 +69,7 @@ class Payload
 
     /**
      * Set payload
-     * @param $payload
+     * @param string $payload
      * @return $this
      */
     public function setPayload($payload)
@@ -80,7 +80,7 @@ class Payload
 
     /**
      * Get post data for service
-     * @return array
+     * @return string
      */
     public function getPayload()
     {
@@ -100,14 +100,14 @@ class Payload
      * Check available name for service
      * @param string $serviceType
      * @return string
-     * @throw
+     * @throw RuntimeException
      */
     protected function checkServiceType($serviceType)
     {
         $reflection = new \ReflectionObject($this);
         $constants = $reflection->getConstants();
         if (!in_array($serviceType, $constants)) {
-            throw new RuntimeException('Service type does not supports: ' . $serviceType);
+            throw new RuntimeException('The type of service does not support: ' . $serviceType);
         }
         return $serviceType;
     }
@@ -136,7 +136,7 @@ class Payload
     public function getQueryText()
     {
         if (empty($this->queryText)) {
-            throw new \RuntimeException('Need set query text');
+            throw new \RuntimeException('A text of query must be set up');
         }
         return $this->queryText;
     }

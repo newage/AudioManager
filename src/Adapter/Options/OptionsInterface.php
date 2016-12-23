@@ -12,14 +12,14 @@ interface OptionsInterface
      * Set option
      * @param $name
      * @param $value
-     * @return mixed
+     * @return OptionsInterface
      */
     public function setOption($name, $value);
 
     /**
      * Set options
      * @param array $options
-     * @return mixed
+     * @return OptionsInterface
      */
     public function setOptions(array $options);
 }

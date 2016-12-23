@@ -93,10 +93,12 @@ class Ivona extends AbstractOptions
 
     /**
      * @param string $secretKey
+     * @return $this
      */
     public function setSecretKey($secretKey)
     {
         $this->secretKey = $secretKey;
+        return $this;
     }
 
     /**
@@ -109,10 +111,12 @@ class Ivona extends AbstractOptions
 
     /**
      * @param string $accessKey
+     * @return $this
      */
     public function setAccessKey($accessKey)
     {
         $this->accessKey = $accessKey;
+        return $this;
     }
 
     /**
@@ -137,10 +141,12 @@ class Ivona extends AbstractOptions
 
     /**
      * @param string $language
+     * @return $this
      */
     public function setLanguage($language)
     {
         $this->language = $language;
+        return $this;
     }
 
     /**
@@ -153,10 +159,12 @@ class Ivona extends AbstractOptions
 
     /**
      * @param string $voice
+     * @return $this
      */
     public function setVoice($voice)
     {
         $this->voice = $voice;
+        return $this;
     }
 
     /**
@@ -169,10 +177,12 @@ class Ivona extends AbstractOptions
 
     /**
      * @param string $outputFormatCodec
+     * @return $this
      */
     public function setOutputFormatCodec($outputFormatCodec)
     {
         $this->outputFormatCodec = $outputFormatCodec;
+        return $this;
     }
 
     /**
@@ -185,10 +195,12 @@ class Ivona extends AbstractOptions
 
     /**
      * @param string $outputSampleRate
+     * @return $this
      */
     public function setOutputSampleRate($outputSampleRate)
     {
         $this->outputSampleRate = $outputSampleRate;
+        return $this;
     }
 
     /**
@@ -201,9 +213,11 @@ class Ivona extends AbstractOptions
 
     /**
      * @param string $parametersRate
+     * @return $this
      */
     public function setParametersRate($parametersRate)
     {
         $this->parametersRate = $parametersRate;
+        return $this;
     }
 }

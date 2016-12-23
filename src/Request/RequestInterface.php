@@ -31,10 +31,8 @@ interface RequestInterface
 
     /**
      * Get info from request
-     * 
-*@param string $opt
-     * 
-*@return mixed
+     * @param string $opt
+     * @return mixed
      */
     public function getInfo($opt = null);
 

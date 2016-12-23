@@ -6,7 +6,7 @@ use AudioManager\Adapter\Options\Ivona as Options;
 use AudioManager\Adapter\Ivona\Payload;
 
 /**
- * Adapter for Ivona TTS
+ * The adapter for Ivona TTS
  * @package AudioManager\Adapter
  * @method Options getOptions()
  */
@@ -51,7 +51,7 @@ class Ivona extends AbstractAdapter implements AdapterInterface
 
     /**
      * Initialize payload
-     * @param $text
+     * @param string $text
      * @return Payload
      */
     private function initPayload($text)

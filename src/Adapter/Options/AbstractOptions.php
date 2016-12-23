@@ -11,9 +11,10 @@ abstract class AbstractOptions implements OptionsInterface
 {
     /**
      * Set option
+     * Fluent interface
      * @param $name
      * @param $value
-     * @return mixed
+     * @return OptionsInterface
      */
     public function setOption($name, $value)
     {
@@ -21,18 +22,19 @@ abstract class AbstractOptions implements OptionsInterface
         if (!method_exists($this, $methodName)) {
             throw new RuntimeException('Method not exists: ' . $methodName);
         }
-        $this->$methodName($value);
+        return $this->$methodName($value);
     }
 
     /**
      * Set options
      * @param array $options
-     * @return mixed
+     * @return OptionsInterface
      */
     public function setOptions(array $options)
     {
         foreach ($options as $name => $value) {
             $this->setOption($name, $value);
         }
+        return $this;
     }
 }
