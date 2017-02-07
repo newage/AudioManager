@@ -4,10 +4,12 @@ namespace AudioManager\Adapter;
 
 use AudioManager\Adapter\Options\OptionsInterface;
 use Aws\Polly\PollyClient;
+use AudioManager\Adapter\Options\Polly as Options;
 
 /**
  * Class Polly
  * @package AudioManager\Adapter
+ * @method Options getOptions()
  */
 class Polly extends AbstractAdapter implements AdapterInterface
 {
@@ -18,12 +20,31 @@ class Polly extends AbstractAdapter implements AdapterInterface
      */
     public function read($text)
     {
+        $initializeOptions = $this->getOptions()->getInitializeOptions();
         $pollyClient = new PollyClient([
-            'version' => 'latest',
-            'region'  => 'us-west-2'
+            'version' => $initializeOptions->getVersion(),
+            'region' => $initializeOptions->getRegion(),
+            'credentials' => [
+                'key' => $initializeOptions->getCredentials()->getKey(),
+                'secret' => $initializeOptions->getCredentials()->getSecret()
+            ]
         ]);
-        $result = $pollyClient->createSynthesizeSpeechPreSignedUrl([]);
-        return $result;
+
+        $synthesizeOptions = [
+            'OutputFormat' => $this->getOptions()->getOutputFormat(),
+            'Text' => $text,
+            'TextType' => $this->getOptions()->getTextType(),
+            'VoiceId' => $this->getOptions()->getVoiceId(),
+            'SampleRate' => $this->getOptions()->getSampleRate(),
+        ];
+        if (!empty($this->getOptions()->getLexiconNames())) {
+            $synthesizeOptions['LexiconNames'] = $this->getOptions()->getLexiconNames();
+        }
+
+        $awsResult = $pollyClient->synthesizeSpeech($synthesizeOptions);
+        $this->setHeaders($awsResult->get('@metadata'));
+        $stream = $awsResult->get('AudioStream');
+        return $stream->getContents();
     }
 
     /**
@@ -32,6 +53,6 @@ class Polly extends AbstractAdapter implements AdapterInterface
      */
     protected function initOptions()
     {
-        // TODO: Implement initOptions() method.
+        return new Options();
     }
 }
