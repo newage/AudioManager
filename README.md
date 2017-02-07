@@ -8,7 +8,8 @@ AudioManager
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-A manager for a popular text-to-speech cloud services ([Google](https://translate.google.com/), [Ivona](https://www.ivona.com/), ...) on PHP. This project uses [PSR-4](http://www.php-fig.org/psr/psr-4/) autoloading standard,
+A manager for a popular text-to-speech cloud services ([Google](https://translate.google.com/), [Ivona](https://www.ivona.com/), [Amazon Polly](
+https://aws.amazon.com/polly/)...) on PHP. This project uses [PSR-4](http://www.php-fig.org/psr/psr-4/) autoloading standard,
 [PSR-2](http://www.php-fig.org/psr/psr-2/) coding style
 
 ## Install
@@ -37,6 +38,22 @@ Setup an `Ivona` adapter
     $adapter->getOptions()->setOutputFormatCodec('...'); //Default 'MP3'
     $adapter->getOptions()->setOutputSampleRate('...'); //Default '22050'
     $adapter->getOptions()->setParametersRate('...'); //Default 'slow'
+
+Setup an `Amazon Polly` adapter
+
+    $adapter = new \AudioManager\Adapter\Polly();
+    $adapter->getOptions()->initialize()
+        ->setVersion('latest')
+        ->setRegion('us-west-2')
+        ->setCredentials()
+            ->setKey('...')
+            ->setSecret('...');
+    
+    $adapter->getOptions()->setOutputFormat('...'); //Default 'mp3'
+    $adapter->getOptions()->setLexiconNames('...');
+    $adapter->getOptions()->setSampleRate('...'); //Default '16000'
+    $adapter->getOptions()->setTextType('...'); //Default 'text'
+    $adapter->getOptions()->setVoiceId('...'); //Default 'Salli'
 
 Setup an adapter to manager
 
