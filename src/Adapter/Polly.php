@@ -35,6 +35,7 @@ class Polly extends AbstractAdapter implements AdapterInterface
             'Text' => $text,
             'TextType' => $this->getOptions()->getTextType(),
             'VoiceId' => $this->getOptions()->getVoiceId(),
+            'VoiceLanguageCode' => $this->getOptions()->getLanguage(),
             'SampleRate' => $this->getOptions()->getSampleRate(),
         ];
         if (!empty($this->getOptions()->getLexiconNames())) {
@@ -59,8 +60,11 @@ class Polly extends AbstractAdapter implements AdapterInterface
     public function getHeaders()
     {
         $headers = parent::getHeaders();
-        return [
-            'http_code' => isset($headers['statusCode']) ? $headers['statusCode']: 500,
-        ];
+        return array_merge(
+            $headers,
+            [
+                'http_code' => isset($headers['statusCode']) ? $headers['statusCode']: 500,
+            ]
+        );
     }
 }

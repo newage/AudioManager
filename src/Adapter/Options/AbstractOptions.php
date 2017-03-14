@@ -7,14 +7,14 @@ use AudioManager\Exception\RuntimeException;
 /**
  * @package Adapter\Options
  */
-abstract class AbstractOptions implements OptionsInterface
+abstract class AbstractOptions
 {
     /**
      * Set option
      * Fluent interface
      * @param $name
      * @param $value
-     * @return OptionsInterface
+     * @return $this
      */
     public function setOption($name, $value)
     {
@@ -28,7 +28,7 @@ abstract class AbstractOptions implements OptionsInterface
     /**
      * Set options
      * @param array $options
-     * @return OptionsInterface
+     * @return $this
      */
     public function setOptions(array $options)
     {

@@ -4,6 +4,10 @@ All Notable changes to `AudioManager` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [1.2.2] - 2017-03-14
+- Added methods `setLanguage`, `setVoice` to the option's interface
+- Added language support to the `polly` adapter
+
 ## [1.2.1] - 2017-03-14
 
 ### Fixed

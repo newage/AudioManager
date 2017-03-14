@@ -8,7 +8,7 @@ use AudioManager\Adapter\Polly\InitializeOptions;
  * Class Polly
  * @package Adapter\Options
  */
-class Polly extends AbstractOptions
+class Polly extends AbstractOptions implements OptionsInterface
 {
     protected $initialize;
 
@@ -17,6 +17,7 @@ class Polly extends AbstractOptions
     protected $sampleRate = '16000';
     protected $textType = 'text';
     protected $voiceId = 'Salli';
+    protected $language = 'en-US';
 
     /**
      * @return InitializeOptions
@@ -40,6 +41,39 @@ class Polly extends AbstractOptions
             $this->initialize = new InitializeOptions();
         }
         return $this->initialize;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setVoice($voice)
+    {
+        return $this->setVoiceId($voice);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getVoice()
+    {
+        return $this->getVoiceId();
     }
 
     /**

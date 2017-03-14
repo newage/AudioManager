@@ -8,11 +8,12 @@ use AudioManager\Exception\RuntimeException;
  * Hold options for google adapter
  * @package AudioManager\Adapter\Google
  */
-class Google extends AbstractOptions
+class Google extends AbstractOptions implements OptionsInterface
 {
 
     protected $language;
     protected $encoding;
+    protected $voice;
 
     /**
      * Set language option
@@ -35,6 +36,23 @@ class Google extends AbstractOptions
             throw new RuntimeException('Need add the language option for google adapter');
         }
         return $this->language;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setVoice($voice)
+    {
+        $this->voice = $voice;
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getVoice()
+    {
+        return $this->voice;
     }
 
     /**
