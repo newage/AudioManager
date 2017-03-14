@@ -4,6 +4,11 @@ All Notable changes to `AudioManager` will be documented in this file.
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [1.2.1] - 2017-03-14
+
+### Fixed
+- Return correct response with a field `http_code`. 
+
 ## [1.2.0] - 2017-02-07
 
 ### Added

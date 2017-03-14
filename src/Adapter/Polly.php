@@ -55,4 +55,12 @@ class Polly extends AbstractAdapter implements AdapterInterface
     {
         return new Options();
     }
+
+    public function getHeaders()
+    {
+        $headers = parent::getHeaders();
+        return [
+            'http_code' => isset($headers['statusCode']) ? $headers['statusCode']: 500,
+        ];
+    }
 }
