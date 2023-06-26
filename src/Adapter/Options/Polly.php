@@ -18,6 +18,7 @@ class Polly extends AbstractOptions implements OptionsInterface
     protected $textType = 'text';
     protected $voiceId = 'Salli';
     protected $language = 'en-US';
+    protected $engine = 'neural';
 
     /**
      * @return InitializeOptions
@@ -163,6 +164,24 @@ class Polly extends AbstractOptions implements OptionsInterface
     public function setVoiceId($voiceId)
     {
         $this->voiceId = $voiceId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEngine()
+    {
+        return $this->engine;
+    }
+
+    /**
+     * @param string $engine
+     * @return Polly
+     */
+    public function setEngine($engine)
+    {
+        $this->engine = $engine;
         return $this;
     }
 }

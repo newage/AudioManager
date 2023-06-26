@@ -37,6 +37,7 @@ class Polly extends AbstractAdapter implements AdapterInterface
             'VoiceId' => $this->getOptions()->getVoiceId(),
             'VoiceLanguageCode' => $this->getOptions()->getLanguage(),
             'SampleRate' => $this->getOptions()->getSampleRate(),
+            'Engine' => $this->getOptions()->getEngine(),
         ];
         if (!empty($this->getOptions()->getLexiconNames())) {
             $synthesizeOptions['LexiconNames'] = $this->getOptions()->getLexiconNames();
